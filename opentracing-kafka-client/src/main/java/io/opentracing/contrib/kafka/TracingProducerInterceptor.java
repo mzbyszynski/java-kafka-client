@@ -13,7 +13,6 @@
  */
 package io.opentracing.contrib.kafka;
 
-import io.opentracing.util.GlobalTracer;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerInterceptor;
 import org.apache.kafka.clients.producer.ProducerRecord;
@@ -23,7 +22,7 @@ public class TracingProducerInterceptor<K, V> implements ProducerInterceptor<K, 
 
   @Override
   public ProducerRecord<K, V> onSend(ProducerRecord<K, V> producerRecord) {
-    TracingKafkaUtils.buildAndInjectSpan(producerRecord, GlobalTracer.get()).finish();
+    TracingKafkaUtils.buildAndInjectSpan(producerRecord, TracingKafkaUtils.getTracer()).finish();
     return producerRecord;
   }
 

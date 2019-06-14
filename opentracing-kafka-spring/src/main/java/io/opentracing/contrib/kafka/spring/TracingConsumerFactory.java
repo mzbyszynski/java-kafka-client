@@ -16,9 +16,10 @@ package io.opentracing.contrib.kafka.spring;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.kafka.ClientSpanNameProvider;
 import io.opentracing.contrib.kafka.TracingKafkaConsumer;
-import io.opentracing.util.GlobalTracer;
 import java.util.Map;
 import java.util.function.BiFunction;
+
+import io.opentracing.contrib.kafka.TracingKafkaUtils;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.common.serialization.Deserializer;
@@ -40,7 +41,7 @@ public class TracingConsumerFactory<K, V> implements ConsumerFactory<K, V> {
    * GlobalTracer is used to get tracer
    */
   public TracingConsumerFactory(ConsumerFactory<K, V> consumerFactory) {
-    this(consumerFactory, GlobalTracer.get());
+    this(consumerFactory, TracingKafkaUtils.getTracer());
   }
 
   public TracingConsumerFactory(ConsumerFactory<K, V> consumerFactory, Tracer tracer,
@@ -57,7 +58,7 @@ public class TracingConsumerFactory<K, V> implements ConsumerFactory<K, V> {
    */
   public TracingConsumerFactory(ConsumerFactory<K, V> consumerFactory,
       BiFunction<String, ConsumerRecord, String> consumerSpanNameProvider) {
-    this(consumerFactory, GlobalTracer.get(), consumerSpanNameProvider);
+    this(consumerFactory, TracingKafkaUtils.getTracer(), consumerSpanNameProvider);
   }
 
   @Override

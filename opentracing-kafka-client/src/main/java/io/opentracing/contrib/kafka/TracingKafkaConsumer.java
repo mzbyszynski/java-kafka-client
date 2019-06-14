@@ -15,7 +15,6 @@ package io.opentracing.contrib.kafka;
 
 
 import io.opentracing.Tracer;
-import io.opentracing.util.GlobalTracer;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.List;
@@ -53,7 +52,7 @@ public class TracingKafkaConsumer<K, V> implements Consumer<K, V> {
    * GlobalTracer is used to get tracer
    */
   public TracingKafkaConsumer(Consumer<K, V> consumer) {
-    this(consumer, GlobalTracer.get());
+    this(consumer, TracingKafkaUtils.getTracer());
   }
 
   public TracingKafkaConsumer(Consumer<K, V> consumer, Tracer tracer,
@@ -70,7 +69,7 @@ public class TracingKafkaConsumer<K, V> implements Consumer<K, V> {
    */
   public TracingKafkaConsumer(Consumer<K, V> consumer,
       BiFunction<String, ConsumerRecord, String> consumerSpanNameProvider) {
-    this(consumer, GlobalTracer.get(), consumerSpanNameProvider);
+    this(consumer, TracingKafkaUtils.getTracer(), consumerSpanNameProvider);
   }
 
   @Override

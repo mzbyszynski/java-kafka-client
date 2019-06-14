@@ -13,7 +13,6 @@
  */
 package io.opentracing.contrib.kafka;
 
-import io.opentracing.util.GlobalTracer;
 import java.util.Map;
 import org.apache.kafka.clients.consumer.ConsumerInterceptor;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -26,7 +25,7 @@ public class TracingConsumerInterceptor<K, V> implements ConsumerInterceptor<K, 
   @Override
   public ConsumerRecords<K, V> onConsume(ConsumerRecords<K, V> records) {
     for (ConsumerRecord<K, V> record : records) {
-      TracingKafkaUtils.buildAndFinishChildSpan(record, GlobalTracer.get());
+      TracingKafkaUtils.buildAndFinishChildSpan(record, TracingKafkaUtils.getTracer());
     }
 
     return records;

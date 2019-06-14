@@ -67,6 +67,7 @@
     <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
 
     <opentracing.version>0.32.0</opentracing.version>
+    <opentracing.tracerresolver.version>0.1.8</opentracing.tracerresolver.version>
     <kafka.version>2.2.0</kafka.version>
     <spring.kafka.version>2.2.4.RELEASE</spring.kafka.version>
     <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
@@ -104,8 +105,21 @@
 
     <dependency>
       <groupId>io.opentracing</groupId>
+      <artifactId>opentracing-noop</artifactId>
+      <version>${opentracing.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opentracing.contrib</groupId>
+      <artifactId>opentracing-tracerresolver</artifactId>
+      <version>${opentracing.tracerresolver.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.opentracing</groupId>
       <artifactId>opentracing-util</artifactId>
       <version>${opentracing.version}</version>
+      <scope>test</scope>
     </dependency>
 
     <dependency>

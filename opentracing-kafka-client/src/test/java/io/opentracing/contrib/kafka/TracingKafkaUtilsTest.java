@@ -18,12 +18,16 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import io.opentracing.Tracer;
 import io.opentracing.mock.MockSpan;
 import io.opentracing.mock.MockTracer;
+import io.opentracing.noop.NoopTracer;
+import io.opentracing.util.GlobalTracer;
 import org.apache.kafka.common.header.Headers;
 import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.junit.Before;
 import org.junit.Test;
+import org.springframework.util.Assert;
 
 
 public class TracingKafkaUtilsTest {
@@ -90,4 +94,10 @@ public class TracingKafkaUtilsTest {
     assertEquals(span2.context().spanId(), spanContext.spanId());
     assertEquals(span2.context().traceId(), spanContext.traceId());
   }
+
+  @Test
+  public void getTracerDefaultsToGlobalTracer() {
+    Assert.isInstanceOf(GlobalTracer.class, TracingKafkaUtils.getTracer());
+  }
+
 }

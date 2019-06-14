@@ -16,8 +16,9 @@ package io.opentracing.contrib.kafka.spring;
 import io.opentracing.Tracer;
 import io.opentracing.contrib.kafka.ClientSpanNameProvider;
 import io.opentracing.contrib.kafka.TracingKafkaProducer;
-import io.opentracing.util.GlobalTracer;
 import java.util.function.BiFunction;
+
+import io.opentracing.contrib.kafka.TracingKafkaUtils;
 import org.apache.kafka.clients.producer.Producer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.springframework.beans.factory.DisposableBean;
@@ -39,7 +40,7 @@ public class TracingProducerFactory<K, V> implements ProducerFactory<K, V>, Disp
    * GlobalTracer is used to get tracer
    */
   public TracingProducerFactory(ProducerFactory<K, V> producerFactory) {
-    this(producerFactory, GlobalTracer.get());
+    this(producerFactory, TracingKafkaUtils.getTracer());
   }
 
   public TracingProducerFactory(ProducerFactory<K, V> producerFactory, Tracer tracer,
@@ -56,7 +57,7 @@ public class TracingProducerFactory<K, V> implements ProducerFactory<K, V>, Disp
    */
   public TracingProducerFactory(ProducerFactory<K, V> producerFactory,
       BiFunction<String, ProducerRecord, String> producerSpanNameProvider) {
-    this(producerFactory, GlobalTracer.get(), producerSpanNameProvider);
+    this(producerFactory, TracingKafkaUtils.getTracer(), producerSpanNameProvider);
   }
 
   @Override

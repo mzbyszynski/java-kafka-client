@@ -17,9 +17,10 @@ import io.opentracing.Tracer;
 import io.opentracing.contrib.kafka.ClientSpanNameProvider;
 import io.opentracing.contrib.kafka.TracingKafkaConsumer;
 import io.opentracing.contrib.kafka.TracingKafkaProducer;
-import io.opentracing.util.GlobalTracer;
 import java.util.Map;
 import java.util.function.BiFunction;
+
+import io.opentracing.contrib.kafka.TracingKafkaUtils;
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -47,7 +48,7 @@ public class TracingKafkaClientSupplier implements KafkaClientSupplier {
    * GlobalTracer is used to get tracer
    */
   public TracingKafkaClientSupplier() {
-    this(GlobalTracer.get());
+    this(TracingKafkaUtils.getTracer());
   }
 
   public TracingKafkaClientSupplier(Tracer tracer,
@@ -68,7 +69,7 @@ public class TracingKafkaClientSupplier implements KafkaClientSupplier {
   public TracingKafkaClientSupplier(
       BiFunction<String, ConsumerRecord, String> consumerSpanNameProvider,
       BiFunction<String, ProducerRecord, String> producerSpanNameProvider) {
-    this(GlobalTracer.get(), consumerSpanNameProvider, producerSpanNameProvider);
+    this(TracingKafkaUtils.getTracer(), consumerSpanNameProvider, producerSpanNameProvider);
   }
 
   // This method is required by Kafka Streams >=1.1, and optional for Kafka Streams <1.1

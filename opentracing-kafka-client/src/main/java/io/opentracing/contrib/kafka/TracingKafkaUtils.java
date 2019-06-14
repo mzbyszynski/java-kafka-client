@@ -17,6 +17,8 @@ import io.opentracing.References;
 import io.opentracing.Span;
 import io.opentracing.SpanContext;
 import io.opentracing.Tracer;
+import io.opentracing.contrib.tracerresolver.TracerResolver;
+import io.opentracing.noop.NoopTracerFactory;
 import io.opentracing.propagation.Format;
 import io.opentracing.tag.Tags;
 import java.util.function.BiFunction;
@@ -31,6 +33,24 @@ public class TracingKafkaUtils {
   private static final Logger logger = LoggerFactory.getLogger(TracingKafkaUtils.class);
   public static final String TO_PREFIX = "To_";
   public static final String FROM_PREFIX = "From_";
+  private static volatile Tracer tracer = null;
+
+  /**
+   * Returns the global tracer instance.
+   *
+   * @return tracer
+   */
+  public static Tracer getTracer() {
+    if (tracer == null) {
+      tracer = TracerResolver.resolveTracer();
+    }
+
+    if (tracer == null) {
+      tracer = NoopTracerFactory.create();
+    }
+
+    return tracer;
+  }
 
   /**
    * Extract Span Context from record headers
